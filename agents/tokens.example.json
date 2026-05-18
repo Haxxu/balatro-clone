@@ -1,0 +1,5 @@
+{
+  "openaiApiKey": "paste-local-token-here",
+  "assetProviderToken": "paste-local-token-here",
+  "notes": "Copy this file to tokens.local.json and keep the real values out of git."
+}

@@ -38,6 +38,9 @@ yarn-error.log
 testem.log
 /typings
 __screenshots__/
+/agents/tokens.local.json
+/.env
+/.env.local
 
 # System files
 .DS_Store

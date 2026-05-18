@@ -1,0 +1,189 @@
+:host {
+  --screen-edge: clamp(1rem, 3vw, 2rem);
+  --panel-border: rgba(255, 255, 255, 0.18);
+  --panel-fill: rgba(16, 10, 20, 0.68);
+  --panel-shadow: 0 20px 60px rgba(0, 0, 0, 0.45);
+  --button-fill: rgba(47, 28, 61, 0.82);
+  --button-fill-hover: rgba(68, 42, 88, 0.92);
+  --button-border: rgba(255, 255, 255, 0.16);
+  --text-main: #f8f1e7;
+  --text-muted: rgba(248, 241, 231, 0.72);
+  display: block;
+  min-height: 100dvh;
+  color: var(--text-main);
+}
+
+.start-screen {
+  position: relative;
+  min-height: 100dvh;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at top, rgba(255, 145, 77, 0.24), transparent 32%),
+    radial-gradient(circle at 20% 20%, rgba(229, 67, 67, 0.2), transparent 24%),
+    linear-gradient(180deg, #22151c 0%, #120c17 55%, #09080f 100%);
+}
+
+.start-screen__background {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(rgba(7, 5, 10, 0.08), rgba(7, 5, 10, 0.38)),
+    url("https://dummyimage.com/1600x900/241726/7a506d.png&text=Balatro+Background");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  filter: saturate(0.9);
+  transform: scale(1.03);
+}
+
+.hero-panel {
+  position: relative;
+  z-index: 1;
+  min-height: 100dvh;
+  padding: var(--screen-edge);
+  display: grid;
+  grid-template-rows: 1fr auto;
+}
+
+.hero-panel__brand {
+  align-self: start;
+  max-width: 28rem;
+  padding: clamp(1rem, 3vw, 2rem);
+  border: 1px solid var(--panel-border);
+  border-radius: 1.5rem;
+  background: linear-gradient(180deg, rgba(37, 22, 33, 0.75), rgba(18, 13, 24, 0.65));
+  backdrop-filter: blur(10px);
+  box-shadow: var(--panel-shadow);
+}
+
+.eyebrow {
+  margin: 0 0 0.75rem;
+  font-size: 0.8rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.hero-panel__brand h1 {
+  margin: 0;
+  font-size: clamp(3rem, 7vw, 5.75rem);
+  line-height: 0.92;
+  text-transform: uppercase;
+}
+
+.subtitle {
+  margin: 1rem 0 0;
+  max-width: 22rem;
+  color: var(--text-muted);
+  font-size: 1rem;
+}
+
+.menu-dock {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: end;
+  gap: 1.5rem;
+  margin-top: 2rem;
+}
+
+.profile-card {
+  min-width: 10rem;
+  padding: 1rem 1.25rem;
+  border: 1px solid var(--button-border);
+  border-radius: 1.2rem;
+  background: var(--panel-fill);
+  box-shadow: var(--panel-shadow);
+  color: inherit;
+  text-align: left;
+  cursor: pointer;
+  transition: transform 160ms ease, background 160ms ease;
+}
+
+.profile-card:hover {
+  transform: translateY(-2px);
+  background: rgba(29, 18, 37, 0.85);
+}
+
+.profile-card__label,
+.profile-card__name {
+  display: block;
+}
+
+.profile-card__label {
+  margin-bottom: 0.4rem;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--text-muted);
+}
+
+.profile-card__name {
+  font-size: 1.15rem;
+  font-weight: 600;
+}
+
+.menu-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.85rem;
+}
+
+.menu-actions__button {
+  min-width: 10rem;
+  padding: 0.95rem 1.6rem;
+  border: 1px solid var(--button-border);
+  border-radius: 999px;
+  background: var(--button-fill);
+  box-shadow: var(--panel-shadow);
+  color: inherit;
+  font: inherit;
+  font-size: 1rem;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+  transition: transform 160ms ease, background 160ms ease, border-color 160ms ease;
+}
+
+.menu-actions__button:hover {
+  transform: translateY(-2px);
+  background: var(--button-fill-hover);
+  border-color: rgba(255, 255, 255, 0.28);
+}
+
+@media (max-width: 900px) {
+  .menu-dock {
+    grid-template-columns: 1fr;
+    justify-items: center;
+  }
+
+  .profile-card {
+    justify-self: start;
+  }
+}
+
+@media (max-width: 640px) {
+  .hero-panel {
+    padding-bottom: 1.25rem;
+  }
+
+  .hero-panel__brand {
+    max-width: none;
+  }
+
+  .menu-dock {
+    justify-items: stretch;
+  }
+
+  .profile-card {
+    justify-self: stretch;
+  }
+
+  .menu-actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .menu-actions__button {
+    min-width: 0;
+  }
+}
