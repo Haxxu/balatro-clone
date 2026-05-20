@@ -1,1 +1,62 @@
-<p>main-menu-page works!</p>
+<div class="min-h-dvh bg-[#120d18] px-4 py-10 text-[#f8f3e7]">
+  <div class="mx-auto flex min-h-[80dvh] max-w-3xl flex-col items-center justify-center gap-6">
+    <h1 class="text-center text-6xl font-black tracking-widest">BALATRO</h1>
+    <p class="text-sm uppercase tracking-[0.3em] text-white/70">Angular Clone</p>
+
+    <div class="mt-6 flex w-full max-w-sm flex-col gap-3 rounded-3xl border border-white/10 bg-black/25 p-6">
+      <button
+        type="button"
+        class="rounded-xl bg-amber-300 px-5 py-3 font-bold text-black transition hover:bg-amber-200"
+        (click)="newRun()"
+      >
+        New Run
+      </button>
+
+      <button
+        type="button"
+        class="rounded-xl bg-white/10 px-5 py-3 font-bold text-white transition hover:bg-white/15 disabled:cursor-not-allowed disabled:opacity-40"
+        [disabled]="!hasSave"
+        (click)="continueRun()"
+      >
+        Continue
+      </button>
+
+      <button
+        type="button"
+        class="rounded-xl bg-white/10 px-5 py-3 font-bold text-white transition hover:bg-white/15"
+        (click)="enableMusic()"
+      >
+        Enable Music
+      </button>
+
+      <button
+        type="button"
+        class="rounded-xl bg-white/10 px-5 py-3 font-bold text-white transition hover:bg-white/15"
+        (click)="audioService.toggleMusic()"
+      >
+        @if (audioService.musicEnabled()) {
+          Disable Music
+        } @else {
+          Play Music
+        }
+      </button>
+
+      <label class="mt-3 grid gap-2 text-sm text-white/75">
+        <span>Music Volume: {{ (audioService.musicVolume() * 100).toFixed(0) }}%</span>
+        <input
+          type="range"
+          min="0"
+          max="1"
+          step="0.05"
+          class="w-full accent-amber-300"
+          [value]="audioService.musicVolume()"
+          (input)="onMusicVolumeInput($event)"
+        />
+      </label>
+
+      <p class="text-xs text-white/55">
+        Music preference and volume are saved in local storage and restored when you reopen the app.
+      </p>
+    </div>
+  </div>
+</div>

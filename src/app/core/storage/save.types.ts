@@ -3,3 +3,8 @@ export type SaveMetadata = {
   version?: number;
   savedAt?: string;
 };
+
+export type AudioSettings = {
+  musicEnabled: boolean;
+  musicVolume: number;
+};

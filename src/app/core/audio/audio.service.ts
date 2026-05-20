@@ -1,14 +1,16 @@
-import { Injectable, signal } from '@angular/core';
+import { inject, Injectable, signal } from '@angular/core';
 import { MAIN_THEME } from '@core/assets/asset-manifest';
+import { SaveService } from '@core/storage/save.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AudioService {
   private musicAudio?: HTMLAudioElement;
+  private readonly saveService = inject(SaveService);
 
-  readonly musicEnabled = signal(false);
-  readonly musicVolume = signal(0.45);
+  readonly musicEnabled = signal(this.saveService.getAudioSettings().musicEnabled);
+  readonly musicVolume = signal(this.saveService.getAudioSettings().musicVolume);
 
   async playMainTheme(): Promise<void> {
     if (!this.musicAudio) {
@@ -20,8 +22,10 @@ export class AudioService {
     try {
       await this.musicAudio.play();
       this.musicEnabled.set(true);
+      this.persistSettings();
     } catch {
       this.musicEnabled.set(false);
+      this.persistSettings();
       console.warn('Browser blocked autoplay. User interaction is required.');
     }
   }
@@ -31,6 +35,7 @@ export class AudioService {
 
     this.musicAudio.pause();
     this.musicEnabled.set(false);
+    this.persistSettings();
   }
 
   stopMusic(): void {
@@ -39,6 +44,7 @@ export class AudioService {
     this.musicAudio.pause();
     this.musicAudio.currentTime = 0;
     this.musicEnabled.set(false);
+    this.persistSettings();
   }
 
   setMusicVolume(volume: number): void {
@@ -49,6 +55,8 @@ export class AudioService {
     if (this.musicAudio) {
       this.musicAudio.volume = safeVolume;
     }
+
+    this.persistSettings();
   }
 
   toggleMusic(): void {
@@ -57,5 +65,12 @@ export class AudioService {
       return;
     }
     void this.playMainTheme();
+  }
+
+  private persistSettings(): void {
+    this.saveService.saveAudioSettings({
+      musicEnabled: this.musicEnabled(),
+      musicVolume: this.musicVolume(),
+    });
   }
 }
