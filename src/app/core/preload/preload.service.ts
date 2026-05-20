@@ -1,8 +1,8 @@
-import { computed, inject, Injectable, signal } from "@angular/core";
-import { PreloadState, PreloadStep } from "./preload.type";
-import { AssetLoaderService } from "@core/assets/asset-loader.service";
-import { SaveService } from "@core/storage/save.service";
-import { AUDIO_ASSETS, IMAGE_ASSETS } from "@core/assets/asset-manifest";
+import { computed, inject, Injectable, signal } from '@angular/core';
+import { AssetLoaderService } from '@core/assets/asset-loader.service';
+import { IMAGE_ASSETS } from '@core/assets/asset-manifest';
+import { SaveService } from '@core/storage/save.service';
+import { PreloadState, PreloadStep, PreloadStepId } from './preload.type';
 
 @Injectable({
   providedIn: 'root',
@@ -12,7 +12,7 @@ export class PreloadService {
     status: 'idle',
     currentStepLabel: 'Waiting...',
     progress: 0,
-  })
+  });
 
   readonly state = this._state.asReadonly();
 
@@ -28,19 +28,14 @@ export class PreloadService {
     },
     {
       id: 'save',
-      label: 'Checking save data...',
-      progressWeight: 15,
+      label: 'Checking save metadata...',
+      progressWeight: 20,
     },
     {
       id: 'images',
-      label: 'Loading card textures...',
-      progressWeight: 55,
+      label: 'Loading important images...',
+      progressWeight: 60,
     },
-    {
-      id: 'audio',
-      label: 'Loading sounds...',
-      progressWeight: 20,
-    }
   ];
 
   private readonly assetLoader = inject(AssetLoaderService);
@@ -77,7 +72,7 @@ export class PreloadService {
         currentStepLabel: 'Failed to load',
         progress: 0,
         errorMessage: error instanceof Error ? error.message : 'Unknown preload error',
-      })
+      });
     }
   }
 
@@ -86,29 +81,22 @@ export class PreloadService {
       status: 'loading',
       currentStepLabel: step.label,
       progress: Math.round((completedWeight / totalWeight) * 100),
-    })
+    });
   }
 
-  private async runStep(stepId: string): Promise<void> {
+  private async runStep(stepId: PreloadStepId): Promise<void> {
     switch (stepId) {
       case 'settings':
         await this.fakeSmallDelay();
         return;
-      
+
       case 'save':
-        this.saveService.getSaveMetaData();
+        this.saveService.getSaveMetadata();
         await this.fakeSmallDelay();
         return;
-      
+
       case 'images':
         await this.assetLoader.preloadImages(IMAGE_ASSETS);
-        return;
-
-      case 'audio':
-        await this.assetLoader.preloadAudio(AUDIO_ASSETS);
-        return;
-
-      default:
         return;
     }
   }
@@ -122,6 +110,6 @@ export class PreloadService {
   }
 
   private fakeSmallDelay(): Promise<void> {
-    return new Promise(resolve => setTimeout(resolve, 250));
+    return new Promise((resolve) => setTimeout(resolve, 250));
   }
 }

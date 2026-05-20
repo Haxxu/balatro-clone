@@ -1,11 +1,16 @@
-export type PreloadStatus = 
+export type PreloadStatus =
   | 'idle'
   | 'loading'
   | 'success'
   | 'error';
 
+export type PreloadStepId =
+  | 'settings'
+  | 'save'
+  | 'images';
+
 export type PreloadStep = {
-  id: string;
+  id: PreloadStepId;
   label: string;
   progressWeight: number;
 };
@@ -15,4 +20,4 @@ export type PreloadState = {
   currentStepLabel: string;
   progress: number;
   errorMessage?: string;
-}
+};
